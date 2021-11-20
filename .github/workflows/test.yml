@@ -1,19 +1,33 @@
-# action.yml
+name: Docker Series Builds
+
 on: [push]
 
 jobs:
-  vm:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo This job does not specify a container.
-          echo It runs directly on the virtual machine.
-        name: Run on VM
-  container:
-    runs-on: ubuntu-latest
-    container: node:10.16-jessie
-    steps:
-      - run: |
-          -docker run -v /var/run/docker.sock:/var/run/docker.sock \
-           -ti docker
-        name: Run in container
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: sidharth.pain   
+        DOCKER_PASSWORD: infy@1234
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build csharp
+      run: |
+        docker build ./c# -t aimvector/csharp:1.0.0
+    - name: docker build nodejs
+      run: |
+        docker build ./nodejs -t aimvector/nodejs:1.0.0
+    - name: docker build python
+      run: |
+        docker build ./python -t aimvector/python:1.0.0
+    - name: docker build golang
+      run: |
+        docker build ./golang -t aimvector/golang:1.0.0
+    - name: docker push
+      run: |
+        docker push aimvector/csharp:1.0.0
+        docker push aimvector/nodejs:1.0.0
+        docker push aimvector/golang:1.0.0
+        docker push aimvector/python:1.0.0
