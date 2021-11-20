@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: docker login
       env:
-        DOCKER_USER: sidharth.pain   
+        DOCKER_USER: sidharthpai   
         DOCKER_PASSWORD: infy@1234
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
